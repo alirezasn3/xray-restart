@@ -2,12 +2,11 @@ package main
 
 import (
 	"flag"
+	"fmt"
 	"log"
 	"net"
 	"os"
 	"os/exec"
-	"slices"
-	"strings"
 	"time"
 
 	goSystemd "github.com/alirezasn3/go-systemd"
@@ -19,6 +18,7 @@ func main() {
 	delay := flag.Int("delay", 3000, "delay after successfull restart in ms")
 	interval := flag.Int("interval", 3000, "how often to check address in ms")
 	install := flag.Bool("install", false, "install systemd service")
+	uninstall := flag.Bool("uninstall", false, "uninstall systemd service")
 
 	flag.Parse()
 
@@ -29,25 +29,26 @@ func main() {
 
 	// check for install and uninstall commands
 	if *install {
-		execPath, err := os.Executable()
-		if err != nil {
-			log.Println(err)
+		execPath, e := os.Executable()
+		if e != nil {
+			log.Println(e)
 			os.Exit(1)
 		}
 
-		execPath += " " + strings.Join(os.Args[1:], " ")
-		err = goSystemd.CreateService(&goSystemd.Service{Name: "xray-restart", ExecStart: execPath, Restart: "on-failure", RestartSec: "3s"})
-		if err != nil {
-			log.Println(err)
+		execPath += fmt.Sprintf(" --address %s --timeout %d --delay %d --interval %d", *address, *timeout, *delay, *interval)
+
+		e = goSystemd.CreateService(&goSystemd.Service{Name: "xray-restart", ExecStart: execPath, Restart: "on-failure", RestartSec: "5s"})
+		if e != nil {
+			log.Println(e)
 			os.Exit(1)
 		} else {
 			log.Println("xray-restart service created")
 			os.Exit(0)
 		}
-	} else if slices.Contains(os.Args, "--uninstall") {
-		err := goSystemd.DeleteService("xray-restart")
-		if err != nil {
-			log.Println(err)
+	} else if *uninstall {
+		e := goSystemd.DeleteService("xray-restart")
+		if e != nil {
+			log.Println(e)
 			os.Exit(1)
 		} else {
 			log.Println("xray-restart service deleted")
