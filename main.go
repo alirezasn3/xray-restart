@@ -18,6 +18,7 @@ func main() {
 	timeout := flag.Int("timeout", 500, "dial timeout in ms")
 	delay := flag.Int("delay", 3000, "delay after successfull restart in ms")
 	interval := flag.Int("interval", 3000, "how often to check address in ms")
+	install := flag.Bool("install", false, "install systemd service")
 
 	flag.Parse()
 
@@ -27,7 +28,7 @@ func main() {
 	}
 
 	// check for install and uninstall commands
-	if slices.Contains(os.Args, "--install") {
+	if *install {
 		execPath, err := os.Executable()
 		if err != nil {
 			log.Println(err)
