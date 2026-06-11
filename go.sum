@@ -1,0 +1,4 @@
+github.com/alirezasn3/go-permissions v1.0.0 h1:9TU0LKJqESdmBiQIydKwgD7O0ns6Wj2O611sGHhJLb0=
+github.com/alirezasn3/go-permissions v1.0.0/go.mod h1:3yn6OdNSK9nx1lOdxOhmbYdGed8O9t1a8ZLHXtcceAI=
+github.com/alirezasn3/go-systemd v1.1.0 h1:H6mC27BrvlKe0v8Tmt8y+pffl/Xf9yKNr7+PZu+oveg=
+github.com/alirezasn3/go-systemd v1.1.0/go.mod h1:PJ6bnu3AP4CbwkA6H+/bKqoF2UWku8ME1HraSsUic60=
